@@ -58,7 +58,7 @@ export async function main(ns) {
 				}
 				if (ns.getServerNumPortsRequired <= Ports)
 					await ns.sleep(10)
-					ns.nuke(target);
+					await ns.nuke(target);
 					await ns.sleep(TimeToSleep)
 					await ns.scp(files, "home", target);
 					Ports = 0;
