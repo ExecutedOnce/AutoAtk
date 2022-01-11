@@ -17,7 +17,7 @@ export async function main(ns) {
 	var killscripts = 0; // 1 if you want to killall() scripts on servers and run your file, 0 if not.                        var killscripts = 1;
 	var loop = 1; // 1 = loop, 0 = run once.         																		  var loop = 0;
 	const TimeToSleep = 100; // Time for sleeps in script to prevent game locks, default is 100ms, may want to increase.      const TimeToSleep = 100;
-	ns.disableLog("ALL");  // Just delete or comment this out if you want to see logging.                                     ns.disableLog("ALL");
+	//ns.disableLog("ALL");  // Just delete or comment this out if you want to see logging.                                     ns.disableLog("ALL");
 	//////////////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 	while(EndLoop==0){
 		if(loop!=1){
@@ -57,16 +57,18 @@ export async function main(ns) {
 					Ports = 5;
 				}
 				if (ns.getServerNumPortsRequired <= Ports)
+					await ns.sleep(10)
 					ns.nuke(target);
 					await ns.sleep(TimeToSleep)
 					await ns.scp(files, "home", target);
 					Ports = 0;
 					var threadcount = Math.floor(ns.getServerMaxRam(target)/ns.getScriptRam(files[0]));
 					if (threadcount >= 1){
+						
 						if (killscripts > 0){
 							ns.killall(target);
 							}
-							
+						ns.print(threadcount)	
 						ns.exec(files[0], target, threadcount);	
 						}
 				else
