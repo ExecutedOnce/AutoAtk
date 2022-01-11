@@ -35,30 +35,31 @@ export async function main(ns) {
 					continue
 					}
 			}
-			if (ns.getServerRequiredHackingLevel(target)<= ns.getHackingLevel()){	
+			if (ns.getServerRequiredHackingLevel(target)<= ns.getHackingLevel()){
+				Ports = 0;	
 				if (ns.fileExists("BruteSSH.exe", "home")) {
 					ns.brutessh(target);
-					Ports = 1;
+					Ports +=1;
 				}
 				if (ns.fileExists("FTPCrack.exe", "home")) {
 					ns.ftpcrack(target);
-					Ports = 2;
+					Ports +=1;
 				}
 				if (ns.fileExists("relaySMTP.exe", "home")){
 					ns.relaysmtp(target);
-					Ports = 3;
+					Ports +=1;
 				}
 				if (ns.fileExists("HTTPWorm.exe", "home")){
 					ns.httpworm(target);
-					Ports = 4;
+					Ports +=1;
 				}
 				if (ns.fileExists("SQLInject.exe", "home")){
 					ns.sqlinject(target);
-					Ports = 5;
+					Ports +=1;
 				}
-				if (ns.getServerNumPortsRequired <= Ports)
-					await ns.sleep(10)
-					await ns.nuke(target);
+				if (ns.getServerNumPortsRequired(target) <= Ports){
+					await ns.sleep(100)
+					ns.nuke(target);
 					await ns.sleep(TimeToSleep)
 					await ns.scp(files, "home", target);
 					Ports = 0;
@@ -71,6 +72,7 @@ export async function main(ns) {
 						ns.print(threadcount)	
 						ns.exec(files[0], target, threadcount);	
 						}
+				}
 				else
 					Ports = 0;		
 			}
